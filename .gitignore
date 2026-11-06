@@ -1,0 +1,42 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+secrets/
+config.local.*
+
+# Local datasets and generated experiment artifacts
+data/
+datasets/
+runs/
+results/
+artifacts/
+cache/
+.cache/
+*.log
+
+# Python environments and bytecode
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS and editors
+.DS_Store
+Thumbs.db
+~$*
+.idea/
+.vscode/
+
+# Local checkpoints, databases and temporary exports
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.sqlite-*
+*.db
+*.db-*
+.tmp/
+tmp/

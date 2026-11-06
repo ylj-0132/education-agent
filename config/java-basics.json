@@ -1,0 +1,838 @@
+{
+  "version": "java-basics-pilot-v3",
+  "status": "provisional",
+  "scope": "依据Java_5训练题扩充的31项候选知识点目录，不是完整Java课程或已核验图谱。未观测不表示不会；不从模板代码推断掌握。",
+  "concepts": {
+    "java.input": "输入读取：按题目格式读取所有值，区分读取次数与循环条件。",
+    "java.integer_arithmetic": "整数运算：加减乘除、取余与整除边界。",
+    "java.condition": "条件判断：比较运算、逻辑组合及边界等号。",
+    "java.loop": "循环控制：初始化、循环条件、更新、终止与重复处理。",
+    "java.array": "数组使用：存储、下标、遍历及元素更新；main参数不作证据。",
+    "java.string": "字符串与字符：读取、字符访问、计数和比较；类型声明不作证据。",
+    "java.sort": "排序与顺序：按题意选择顺序并使用排序结果。",
+    "java.syntax": "Java语法与字面量：关键字、类型和数字字面量；平台类名要求单独说明。",
+    "algorithm.enumeration": "枚举与效率：候选遍历、重复计算及规模约束；未经运行不能称实际超时。",
+    "java.output": "输出格式：按题意输出值、固定文本与多行结果；区分平台入口规范和语言知识。",
+    "java.numeric_range": "数值范围与类型选择：根据中间结果和输入范围选择数值表示，识别溢出风险；仅声明long不作掌握证据。",
+    "java.floating_point": "浮点数与精度：实数计算、整数与浮点除法、精度及输出要求；不用浮点也可能是合理解法。",
+    "java.assignment": "赋值与状态更新：变量交换、更新顺序和旧值保留；不因出现赋值语句就判断掌握。",
+    "java.string_comparison": "字符串比较：内容相等、字典序和逐字符比较；只评价提交实际采用的比较方式。",
+    "java.string_transformation": "字符串构造与变换：截取、替换、拼接及局部字符修改；注意索引和长度边界。",
+    "java.collections_set": "集合与去重：成员判断、去重和不同元素计数；数组标记等替代方案不因未用Set而判错。",
+    "java.collections_map": "映射与键值统计：维护键到数量或状态的对应关系；频次数组等替代实现同样有效。",
+    "algorithm.counting": "计数与频次统计：计数条件、计数器初始化与重复统计；区分具体统计逻辑与使用容器。",
+    "algorithm.aggregation": "累加与汇总：按条件累加、总量计算及初值选择；判断循环范围和累计对象是否正确。",
+    "algorithm.extrema": "最大最小值：极值初始化、更新和候选范围；不要把调用min或max直接当作充分证据。",
+    "algorithm.digit_processing": "数位与进制表示：十进制数位提取、字符转数字和进制位数；与Java源码字面量规则分开。",
+    "algorithm.rounding": "整除与取整建模：向上或向下取整、余量处理与整除边界；不能将实数公式直接套入整数运算。",
+    "algorithm.simulation": "过程模拟：依题意维护状态、轮次与停止条件；区分单步更新和整轮更新。",
+    "algorithm.greedy": "贪心选择：说明局部选择为何满足全局目标；排序或选择较小值本身不构成正确性证明。",
+    "algorithm.prefix_aggregation": "前缀汇总：维护前缀极值、累计量等信息并避免重复扫描；不强制要求前缀和数组。",
+    "algorithm.number_theory": "基础数论：整除、因数、素数、最大公约数与最小公倍数；只评价本题实际展示的部分。",
+    "algorithm.combinatorics": "基础组合计数：按类别计数、配对及避免重计；区分计数公式与枚举实现。",
+    "algorithm.interval": "区间与距离：端点包含、区间交集、绝对差及距离条件；按题目实际约束处理边界。",
+    "algorithm.dynamic_programming": "动态规划基础：状态含义、初始条件、转移和计算顺序；不能仅凭使用数组推断掌握。",
+    "algorithm.graph_basics": "图与关系建模：点边关联、度数或确定后继的遍历与重复访问检测；不扩展为最短路等未展示能力。",
+    "algorithm.complexity": "规模与复杂度：结合输入范围分析循环次数和存储量；不能从代码可运行反推学生主动做过复杂度分析。"
+  },
+  "prerequisites": [
+    {
+      "id": "pre-01",
+      "from": "java.condition",
+      "to": "java.loop",
+      "applies_when": "显式判断继续或退出条件的循环练习",
+      "reason": "需理解比较及布尔条件，才能解释循环何时继续或终止；不要求已掌握条件判断目录的全部内容。",
+      "source_ids": [
+        "oracle_for"
+      ],
+      "candidate_problem_ids": [
+        "p03494"
+      ],
+      "status": "draft",
+      "hard_gate": false,
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "pre-02",
+      "from": "java.assignment",
+      "to": "java.loop",
+      "applies_when": "使用计数器或可变状态推进循环的练习",
+      "reason": "需能跟踪初值及更新后的状态；无显式变量更新的循环不据此拦截。",
+      "source_ids": [
+        "oracle_for"
+      ],
+      "candidate_problem_ids": [
+        "p02712"
+      ],
+      "status": "draft",
+      "hard_gate": false,
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "pre-03",
+      "from": "java.integer_arithmetic",
+      "to": "algorithm.rounding",
+      "applies_when": "用整数除法和余数推导向上或向下取整",
+      "reason": "该实现需要理解整除与余数；使用已提供取整接口的练习应另行判断。",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02576",
+        "p02759"
+      ],
+      "status": "draft",
+      "hard_gate": false,
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "pre-04",
+      "from": "java.integer_arithmetic",
+      "to": "algorithm.number_theory",
+      "applies_when": "整除、试除或欧几里得算法练习",
+      "reason": "这些场景需要整除与余数的含义，不表示必须先掌握整数运算目录全部细项。",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02713",
+        "p02819"
+      ],
+      "status": "draft",
+      "hard_gate": false,
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "pre-05",
+      "from": "java.integer_arithmetic",
+      "to": "algorithm.digit_processing",
+      "applies_when": "通过除法和取余提取数位",
+      "reason": "算术提取路线依赖商余运算；字符串路线不适用此条件。",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02766",
+        "p03478"
+      ],
+      "status": "draft",
+      "hard_gate": false,
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "pre-06",
+      "from": "java.string",
+      "to": "algorithm.digit_processing",
+      "applies_when": "通过字符遍历处理较长整数的十进制数位",
+      "reason": "仅要求字符串读取与字符访问基础，不要求已掌握整个字符串宽概念；算术路线另行判断。",
+      "source_ids": [
+        "oracle_strings",
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02577"
+      ],
+      "status": "draft",
+      "hard_gate": false,
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "pre-07",
+      "from": "java.assignment",
+      "to": "algorithm.simulation",
+      "applies_when": "通过可变变量维护逐步模拟状态",
+      "reason": "解释旧状态到新状态的更新顺序需要赋值基础；不适用于所有抽象模拟方法。",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02717",
+        "p02700"
+      ],
+      "status": "draft",
+      "hard_gate": false,
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "pre-08",
+      "from": "java.loop",
+      "to": "algorithm.prefix_aggregation",
+      "applies_when": "用单次顺序扫描维护前缀信息",
+      "reason": "该实现需要理解顺序迭代及更新位置；不推定所有前缀方法都只能用循环实现。",
+      "source_ids": [
+        "oracle_for",
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02791",
+        "p03072"
+      ],
+      "status": "draft",
+      "hard_gate": false,
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "pre-09",
+      "from": "java.array",
+      "to": "algorithm.dynamic_programming",
+      "applies_when": "用数组表保存动态规划状态",
+      "reason": "数组方案需要下标访问与状态存取；滚动变量或映射实现不适用此条。",
+      "source_ids": [
+        "oracle_arrays",
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p03160",
+        "p03161"
+      ],
+      "status": "draft",
+      "hard_gate": false,
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "pre-10",
+      "from": "java.loop",
+      "to": "algorithm.dynamic_programming",
+      "applies_when": "按顺序迭代计算动态规划状态",
+      "reason": "迭代方案需要理解计算顺序；递归记忆化不按此条判断。",
+      "source_ids": [
+        "oracle_for",
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p03160",
+        "p03161"
+      ],
+      "status": "draft",
+      "hard_gate": false,
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "pre-11",
+      "from": "java.array",
+      "to": "algorithm.graph_basics",
+      "applies_when": "以数组维护顶点度数、后继或访问标记",
+      "reason": "仅适用于数组表示；映射等其他表示不以数组为必需前提。",
+      "source_ids": [
+        "oracle_arrays",
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p03680",
+        "p03720"
+      ],
+      "status": "draft",
+      "hard_gate": false,
+      "basis": "project_design_inference"
+    }
+  ],
+  "note": "31项候选概念保留，新增11条有条件先修及23条无向关联，均为待审阅初稿。目录分组不代表包含关系边。未实现推荐算法或自动先修解锁。",
+  "groups": {
+    "language_io": {
+      "name": "语言基础与输入输出",
+      "concept_ids": [
+        "java.input",
+        "java.output",
+        "java.syntax",
+        "java.integer_arithmetic",
+        "java.numeric_range",
+        "java.floating_point",
+        "java.assignment",
+        "java.condition",
+        "java.loop"
+      ]
+    },
+    "strings_containers": {
+      "name": "字符串与数据容器",
+      "concept_ids": [
+        "java.array",
+        "java.string",
+        "java.string_comparison",
+        "java.string_transformation",
+        "java.collections_set",
+        "java.collections_map",
+        "java.sort"
+      ]
+    },
+    "basic_processing": {
+      "name": "统计与基础处理",
+      "concept_ids": [
+        "algorithm.counting",
+        "algorithm.aggregation",
+        "algorithm.extrema",
+        "algorithm.digit_processing",
+        "algorithm.rounding"
+      ]
+    },
+    "algorithmic_methods": {
+      "name": "算法方法与规模",
+      "concept_ids": [
+        "algorithm.enumeration",
+        "algorithm.simulation",
+        "algorithm.greedy",
+        "algorithm.prefix_aggregation",
+        "algorithm.dynamic_programming",
+        "algorithm.complexity"
+      ]
+    },
+    "mathematical_relations": {
+      "name": "数学与关系建模",
+      "concept_ids": [
+        "algorithm.number_theory",
+        "algorithm.combinatorics",
+        "algorithm.interval",
+        "algorithm.graph_basics"
+      ]
+    }
+  },
+  "catalog_source": {
+    "kind": "project_candidate_design",
+    "split": "train",
+    "file": "artifacts/java5-initial/train-questions.json",
+    "sha256": "fe42e970173a37fcdb5dbdf637eb7e88d4d55b79bc29bea1c84bf56c8ff7c214",
+    "unique_questions_reviewed": 117,
+    "basis": "仅快速阅读训练题意，未读取测试作答，也未使用desc/error_desc制定标签；不是论文原始知识标签或逐题金标准。"
+  },
+  "candidate_problem_ids": {
+    "java.output": [
+      "p02613",
+      "p02773"
+    ],
+    "java.numeric_range": [
+      "p02595",
+      "p02754"
+    ],
+    "java.floating_point": [
+      "p02705",
+      "p02731"
+    ],
+    "java.assignment": [
+      "p02717",
+      "p02777"
+    ],
+    "java.string_comparison": [
+      "p02687",
+      "p02790",
+      "p04044"
+    ],
+    "java.string_transformation": [
+      "p02676",
+      "p03041",
+      "p03469"
+    ],
+    "java.collections_set": [
+      "p02701",
+      "p02779",
+      "p03470"
+    ],
+    "java.collections_map": [
+      "p02773",
+      "p02947"
+    ],
+    "algorithm.counting": [
+      "p02613",
+      "p03493",
+      "p04012"
+    ],
+    "algorithm.aggregation": [
+      "p02706",
+      "p02712"
+    ],
+    "algorithm.extrema": [
+      "p02945",
+      "p03308"
+    ],
+    "algorithm.digit_processing": [
+      "p02577",
+      "p02766",
+      "p03478"
+    ],
+    "algorithm.rounding": [
+      "p02576",
+      "p02694",
+      "p02759",
+      "p02783"
+    ],
+    "algorithm.simulation": [
+      "p02700",
+      "p02802",
+      "p03494",
+      "p03998"
+    ],
+    "algorithm.greedy": [
+      "p02578",
+      "p02628",
+      "p03370",
+      "p03434"
+    ],
+    "algorithm.prefix_aggregation": [
+      "p02578",
+      "p02791",
+      "p03072"
+    ],
+    "algorithm.number_theory": [
+      "p02713",
+      "p02819",
+      "p02995",
+      "p03281"
+    ],
+    "algorithm.combinatorics": [
+      "p02729",
+      "p02947"
+    ],
+    "algorithm.interval": [
+      "p02693",
+      "p03457",
+      "p03632"
+    ],
+    "algorithm.dynamic_programming": [
+      "p03160",
+      "p03161"
+    ],
+    "algorithm.graph_basics": [
+      "p03680",
+      "p03720"
+    ],
+    "algorithm.complexity": [
+      "p02577",
+      "p03161",
+      "p03835"
+    ]
+  },
+  "usage_notes": [
+    "分组只用于整理目录，不作为包含关系边，也不是先修关系或知识点掌握的继承规则。",
+    "候选题号说明该题可涉及此知识点，不要求学生采用指定算法、API或容器；具体关联须看实际作答。",
+    "原9个ID和定义保持不变。java.string等较宽概念与新增细项可能重叠，不得把同一问题重复当作多个独立漏洞，也不自动将宽概念状态复制给细项。",
+    "algorithm.enumeration是旧的枚举与效率宽概念；新增complexity仅用于更明确的规模分析，不自动拆分或重标旧画像。",
+    "新目录没有重跑或重标已有画像；旧任务按原知识点配置生成，不能按本配置直接恢复。",
+    "更多候选知识点可能增加提示词长度与汇总请求数；原请求预算保持不变，真实试跑前应按小范围选择目录。"
+  ],
+  "associations": [
+    {
+      "id": "rel-01",
+      "concept_ids": [
+        "java.array",
+        "java.input"
+      ],
+      "use_case": "连续读取N个值并存入数组",
+      "source_ids": [
+        "oracle_arrays"
+      ],
+      "candidate_problem_ids": [
+        "p03494"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-02",
+      "concept_ids": [
+        "java.input",
+        "java.string"
+      ],
+      "use_case": "根据题目要求选择按整数还是字符串读取；不强制保留无关前导零",
+      "source_ids": [
+        "oracle_strings"
+      ],
+      "candidate_problem_ids": [
+        "p02577",
+        "p03493"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-03",
+      "concept_ids": [
+        "java.integer_arithmetic",
+        "java.numeric_range"
+      ],
+      "use_case": "分析中间运算范围及乘法溢出风险",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02595"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-04",
+      "concept_ids": [
+        "algorithm.rounding",
+        "java.floating_point"
+      ],
+      "use_case": "比较整数与浮点取整方案的适用条件",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02694",
+        "p02759"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-05",
+      "concept_ids": [
+        "java.array",
+        "java.loop"
+      ],
+      "use_case": "按题意遍历、检查或更新数组",
+      "source_ids": [
+        "oracle_for",
+        "oracle_arrays"
+      ],
+      "candidate_problem_ids": [
+        "p03494"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-06",
+      "concept_ids": [
+        "java.string",
+        "java.string_comparison"
+      ],
+      "use_case": "字符串内容与字典序比较练习；宽概念状态不自动继承给细项",
+      "source_ids": [
+        "oracle_strings"
+      ],
+      "candidate_problem_ids": [
+        "p02687",
+        "p02790"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-07",
+      "concept_ids": [
+        "java.string",
+        "java.string_transformation"
+      ],
+      "use_case": "字符访问、截取、替换与拼接的组合练习",
+      "source_ids": [
+        "oracle_strings"
+      ],
+      "candidate_problem_ids": [
+        "p02676",
+        "p03469"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-08",
+      "concept_ids": [
+        "algorithm.counting",
+        "java.array"
+      ],
+      "use_case": "有限值域频次数组或访问标记路线",
+      "source_ids": [
+        "oracle_arrays"
+      ],
+      "candidate_problem_ids": [
+        "p02688",
+        "p02707"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-09",
+      "concept_ids": [
+        "algorithm.counting",
+        "java.collections_map"
+      ],
+      "use_case": "按键累加频次；数组等替代方案同样有效",
+      "source_ids": [
+        "oracle_map"
+      ],
+      "candidate_problem_ids": [
+        "p02773",
+        "p02947"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-10",
+      "concept_ids": [
+        "algorithm.counting",
+        "java.collections_set"
+      ],
+      "use_case": "去重后计数；不是所有计数题都需要集合",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02701",
+        "p03470"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-11",
+      "concept_ids": [
+        "algorithm.counting",
+        "java.condition"
+      ],
+      "use_case": "满足条件时更新计数器",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02595",
+        "p03493"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-12",
+      "concept_ids": [
+        "algorithm.aggregation",
+        "java.loop"
+      ],
+      "use_case": "在遍历时累加所需数量",
+      "source_ids": [
+        "oracle_for"
+      ],
+      "candidate_problem_ids": [
+        "p02706",
+        "p02712"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-13",
+      "concept_ids": [
+        "algorithm.extrema",
+        "algorithm.prefix_aggregation"
+      ],
+      "use_case": "顺序维护此前最大值或最小值",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02791",
+        "p03072"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-14",
+      "concept_ids": [
+        "algorithm.greedy",
+        "java.sort"
+      ],
+      "use_case": "需要排序的局部选择方案；不把排序设为所有贪心的先修",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02628",
+        "p03434"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-15",
+      "concept_ids": [
+        "algorithm.complexity",
+        "algorithm.enumeration"
+      ],
+      "use_case": "按输入范围检查候选空间和嵌套枚举规模",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p03448",
+        "p03835"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-16",
+      "concept_ids": [
+        "algorithm.simulation",
+        "java.loop"
+      ],
+      "use_case": "重复状态转移与停止条件；有限次直接展开也是替代方案",
+      "source_ids": [
+        "oracle_for"
+      ],
+      "candidate_problem_ids": [
+        "p02700",
+        "p03494"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-17",
+      "concept_ids": [
+        "algorithm.combinatorics",
+        "algorithm.number_theory"
+      ],
+      "use_case": "整除分类、交集扣除与计数公式结合",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02995"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-18",
+      "concept_ids": [
+        "algorithm.interval",
+        "java.condition"
+      ],
+      "use_case": "区间边界或距离约束的条件检查",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02693",
+        "p03632"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-19",
+      "concept_ids": [
+        "algorithm.complexity",
+        "algorithm.dynamic_programming"
+      ],
+      "use_case": "比较转移规模和计算代价",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p03161"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-20",
+      "concept_ids": [
+        "algorithm.graph_basics",
+        "algorithm.simulation"
+      ],
+      "use_case": "根据确定后继移动并检测重复访问",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p03680"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-21",
+      "concept_ids": [
+        "algorithm.counting",
+        "algorithm.digit_processing"
+      ],
+      "use_case": "按数位条件计数或累计",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02577",
+        "p03478"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-22",
+      "concept_ids": [
+        "java.sort",
+        "java.string_comparison"
+      ],
+      "use_case": "按字符串字典序排序并拼接",
+      "source_ids": [
+        "oracle_strings"
+      ],
+      "candidate_problem_ids": [
+        "p04044"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    },
+    {
+      "id": "rel-23",
+      "concept_ids": [
+        "algorithm.enumeration",
+        "algorithm.extrema"
+      ],
+      "use_case": "枚举候选并更新最优值",
+      "source_ids": [
+        "local_train"
+      ],
+      "candidate_problem_ids": [
+        "p02767"
+      ],
+      "status": "draft",
+      "basis": "project_design_inference"
+    }
+  ],
+  "relation_sources": {
+    "oracle_for": {
+      "title": "Oracle Java Tutorials The for Statement",
+      "url": "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html",
+      "supports": "循环初始化、布尔终止条件、更新和遍历示例；不直接证明教学先修关系。"
+    },
+    "oracle_arrays": {
+      "title": "Oracle Java Tutorials Arrays",
+      "url": "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html",
+      "supports": "数组、下标访问与元素更新；不证明所有算法必须用数组。"
+    },
+    "oracle_strings": {
+      "title": "Oracle Java Tutorials Strings",
+      "url": "https://docs.oracle.com/javase/tutorial/java/data/strings.html",
+      "supports": "字符串创建、字符序列与不可变性，以及比较和变换相关章节入口。"
+    },
+    "oracle_map": {
+      "title": "Oracle Java Tutorials The Map Interface",
+      "url": "https://docs.oracle.com/javase/tutorial/collections/interfaces/map.html",
+      "supports": "键值映射与统计用法；不证明频次统计必须用Map。"
+    },
+    "local_train": {
+      "title": "Java_5训练题意",
+      "file": "artifacts/java5-initial/train-questions.json",
+      "sha256": "fe42e970173a37fcdb5dbdf637eb7e88d4d55b79bc29bea1c84bf56c8ff7c214",
+      "supports": "具体练习场景；共同出现不直接证明先修。"
+    }
+  },
+  "relation_policy": {
+    "version": "java-relations-draft-v1",
+    "types": [
+      "prerequisite",
+      "association"
+    ],
+    "prerequisite_direction": "from为基础，to为目标；仅在applies_when场景成立时使用，不是无条件的整个概念掌握要求。",
+    "association_direction": "无向，一对知识点仅保存一次；推荐查询时可从任一端使用。",
+    "review_status": "assistant_draft_not_teacher_validated",
+    "source_limit": "官方资料说明语言机制，题目说明场景，教学关系与必要性的结论由本项目推断；不称为官方教学图谱。",
+    "activation": "当前未接推荐算法；draft先修不能直接强制拦截。先判断教学场景，条件无法确定时保留不确定性，不猜测启用。",
+    "state_limit": "关系不传播学生状态；没有画像不等于不会，Good或Bad不能直接跨边复制。",
+    "coverage_limit": "仅首批基础与典型算法关系，未连边不表示独立或没有先修；不求全连接，不自动按教程顺序补边。"
+  }
+}
