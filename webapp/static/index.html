@@ -1,11 +1,18 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>循证 · 教育智能体工作台</title><link rel="stylesheet" href="/style.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>教育智能体 · 研究展示</title><link rel="stylesheet" href="/style.css"></head>
 <body>
-<aside class="rail"><a class="brand" href="#overview"><span class="mark">循</span><span>循证<small>EDUCATION AGENT</small></span></a>
-<p class="rail-label">教学工作空间</p><nav aria-label="主导航"><button data-page="demo">▶ <span>已有结果演示</span></button><button data-page="overview" class="active">01 <span>项目总览</span></button><button data-page="profiles">02 <span>学生画像</span></button><button data-page="questions">03 <span>练习与审核</span></button><button data-page="tasks">04 <span>任务工作台</span></button></nav>
-<div class="rail-bottom"><span class="dot"></span> 本地工作空间<p>Java 原型 · 人工复核<br>证据可以回查，判断保留边界。</p></div></aside>
-<main><header><span id="breadcrumb">工作空间 / 项目总览</span><div class="header-actions"><label for="student">学生</label><select id="student"><option value="">全部学生</option></select><button id="refresh" class="quiet">刷新数据 ↻</button></div></header>
+<aside class="rail"><a class="brand" href="#overview"><span>教育智能体<small>研究方法与实验结果</small></span></a>
+<p class="rail-label">研究原型</p><nav aria-label="主导航">
+<button data-page="overview" class="active">01 <span>系统方法</span></button>
+<button data-page="demo">02 <span>实际案例</span></button>
+<button data-page="skills">03 <span>技能进化实验</span></button>
+<div class="nav-divider">完整记录与运行</div>
+<button data-page="profiles"><span>学生画像</span></button>
+<button data-page="questions"><span>练习与审核</span></button>
+<button data-page="tasks"><span>任务工作台</span></button></nav>
+<div class="rail-bottom"><span class="dot"></span> 本地工作空间<p>Java 原型 · 人工复核<br>方法说明与已保存结果。</p></div></aside>
+<main><header><span id="breadcrumb">工作空间 / 研究概览</span><div class="header-actions"><label for="student">学生</label><select id="student"><option value="">全部学生</option></select><button id="refresh" class="quiet">刷新数据 ↻</button></div></header>
 <div id="notice" role="status" hidden></div><div id="content" aria-live="polite"><p class="empty">正在读取本地任务记录…</p></div>
 <footer>原始作答 / 工具观测 / 模型推断，分别记录。未观察不等于不会。</footer></main>
 <dialog id="detail"><div class="dialog-top"><h2 id="detail-title">证据详情</h2><button id="close-detail" class="quiet">关闭 ×</button></div><div id="detail-body"></div></dialog>
