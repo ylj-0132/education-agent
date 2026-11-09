@@ -7,6 +7,17 @@ from urllib.parse import parse_qs, urlsplit
 
 from .service import WorkbenchService
 
+# Explicit assets only: module imports do not expose the repository as a file server.
+STATIC_FILES = (
+    'index.html', 'style.css', 'app.js', 'router.js', 'state.js', 'labels.js',
+    'api.js', 'ui.js', 'demo-route.js', 'job-poller.js',
+    'pages/overview.js', 'pages/demo.js', 'pages/skills.js',
+    'pages/profiles.js', 'pages/questions.js', 'pages/tasks.js',
+    'data/skill-results.js',
+)
+STATIC_ROUTES = {'/' + name: name for name in STATIC_FILES}
+STATIC_ROUTES['/'] = 'index.html'
+
 
 def make_server(root, port=8765, service=None):
     service = service or WorkbenchService(root)
@@ -64,13 +75,8 @@ def make_server(root, port=8765, service=None):
                     return self.send(200, {'jobs': service.jobs()})
                 if url.path.startswith('/api/jobs/'):
                     return self.send(200, {'job': service.get_job(url.path.rsplit('/', 1)[-1])})
-                names = {
-                    '/': 'index.html', '/index.html': 'index.html',
-                    '/app.js': 'app.js', '/demo-route.js': 'demo-route.js',
-                    '/job-poller.js': 'job-poller.js', '/style.css': 'style.css',
-                }
-                if url.path in names:
-                    path = static / names[url.path]
+                if url.path in STATIC_ROUTES:
+                    path = static / STATIC_ROUTES[url.path]
                     mime = {
                         '.html': 'text/html; charset=utf-8',
                         '.css': 'text/css; charset=utf-8',

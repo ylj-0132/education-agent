@@ -45,6 +45,22 @@ python serve_workbench.py
 
 结果读取不启动任务，草稿保存不等于接收作答。任务状态仅在当前服务会话内保存，持久恢复仍由 CLI 的 SQLite 检查点负责。`webapp/static/` 是现有展示页面，与核心学习流程分开。
 
+### 现有前端代码职责
+
+页面使用浏览器原生 ES modules，从 `app.js` 启动，无打包或依赖安装步骤。通过 `serve_workbench.py` 访问，不直接双击 HTML 文件。
+
+| `webapp/static/` 下的位置 | 负责内容 |
+| --- | --- |
+| `app.js`、`router.js` | 注册页面、切换栏目、刷新数据与处理过期页面请求 |
+| `state.js`、`api.js` | 会话状态、学生筛选、HTTP 请求及结果缓存 |
+| `ui.js`、`labels.js` | 公共展示组件、中文标签及状态名称 |
+| `pages/` | 系统方法、实际案例、技能实验、画像、题目与任务六个页面 |
+| `data/skill-results.js` | 已核对的固定实验结果，与页面渲染分开 |
+| `demo-route.js`、`job-poller.js` | 固定案例关联校验、可中止的任务轮询 |
+| `index.html`、`style.css` | 页面框架、现有样式与响应式布局 |
+
+`static/package.json` 仅声明 JavaScript 模块类型，方便 Node 离线测试，不含运行依赖。静态资源由 `server.py` 显式列出；新增文件需同步资源清单。固定技能实验数据不代表实时计算结果。
+
 ## 当前状态
 
 核心命令行链路已实现：画像及增量更新、正式B推荐、出题与六维审核、轻量Java验证、作答接收、题目使用记录、trace与检查点恢复。最后完整离线验证为142项通过（2026-10-30）。真实 API 与小批量 Java 实验另存于本地《项目实验记录》，不随代码仓库分发；上述测试数量是历史记录，不代表最新全套测试已重跑。
@@ -92,11 +108,11 @@ python serve_workbench.py
 
 本地服务串行启动任务，新结果进入 `runs/workbench-<任务编号>/`。页面任务列表为当前服务会话状态，重启后仍可读取已保存产物；恢复旧任务仍使用原 CLI 和原输入，页面不自动续跑。页面不提供自动发布、自动运行生成代码、自动创建用例或修改旧推断。不要在任务进行中关闭本地服务。运行结束后点击“刷新数据”读取新增结果。
 
-验证说明：新增服务与任务轮询有离线测试；开发期间未调用付费模型、未执行学生 Java。浏览器自动化宿主不可用，尚未完成实际浏览器视觉及点击验收；HTTP 资源、数据接口和 JS 语法已检查。
+验证说明：本地服务、数据请求、案例校验与任务轮询有离线测试。前端整理后使用本地 Chromium 对照了六个页面的桌面/窄屏截图、案例五步内容，并用拦截的假响应检查预览、确认和输入变更流程；没有触发真实模型或 Java 任务。这不代表付费执行或真实学生使用验收。
 
 ```powershell
 python -m unittest discover -s tests -p test_workbench.py
-node --test tests/test_job_poller.cjs
+node --test tests/test_job_poller.cjs tests/test_demo_route.cjs tests/test_frontend.cjs
 ```
 
 ### Java_5全量入库与画像

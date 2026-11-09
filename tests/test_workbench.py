@@ -166,6 +166,29 @@ class WorkbenchTests(unittest.TestCase):
         response=conn.getresponse();self.assertEqual(json.loads(response.read())['artifact']['student_id'],'s1')
         conn.request('POST','/api/jobs',body=json.dumps({'operation':'profile','mode':'preview','fields':{}}),headers={'Content-Type':'application/json','X-Workbench-Token':self.service.csrf_token})
         response=conn.getresponse();self.assertEqual(response.status,202);job=json.loads(response.read())['job'];self.wait(job)
+
+    def test_http_serves_page_modules_but_not_arbitrary_files(self):
+        root = Path(__file__).resolve().parents[1]
+        server = make_server(root, 0, self.service)
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        self.addCleanup(server.server_close)
+        self.addCleanup(server.shutdown)
+        conn = http.client.HTTPConnection('127.0.0.1', server.server_port)
+        self.addCleanup(conn.close)
+        for path in ('/router.js', '/pages/demo.js', '/data/skill-results.js'):
+            with self.subTest(path=path):
+                conn.request('GET', path)
+                response = conn.getresponse()
+                body = response.read()
+                self.assertEqual(response.status, 200)
+                self.assertEqual(response.getheader('Content-Type'), 'text/javascript; charset=utf-8')
+                self.assertIn(b'export ', body)
+        for path in ('/package.json', '/pages/../../service.py', '/.env'):
+            with self.subTest(path=path):
+                conn.request('GET', path)
+                response = conn.getresponse()
+                response.read()
+                self.assertEqual(response.status, 404)
     def test_finite_output_and_exception(self):
         self.service.runner=lambda a,c:(0,'x'*100000,'')
         job=self.wait(self.service.launch({'operation':'profile','mode':'preview','fields':{}}))
