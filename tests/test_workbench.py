@@ -102,6 +102,56 @@ class WorkbenchTests(unittest.TestCase):
         data=self.service.bootstrap()
         self.assertEqual(data['profiles'][0]['student_id'],'s1')
         self.assertIn('csrf_token',data)
+
+    def test_command_modes_and_approval_are_explicit(self):
+        cases = (
+            ('profile', 'execute', '--execute'),
+            ('submit', 'save', '--save'),
+            ('verify_student', 'execute', '--execute'),
+        )
+        for operation, mode, flag in cases:
+            with self.subTest(operation=operation):
+                payload = dict(operation=operation, mode=mode, confirm=True, fields={})
+                if operation.startswith('verify_'):
+                    payload['approve_sha256'] = 'a' * 64
+                args, output = self.service.command(payload, 'mode-test')
+                self.assertEqual(args[-1], flag)
+                self.assertEqual(output, 'runs/workbench-mode-test')
+                self.assertNotIn('--save' if flag == '--execute' else '--execute', args)
+                if operation.startswith('verify_'):
+                    self.assertEqual(args[args.index('--approve-sha256') + 1], 'a' * 64)
+        self.assertEqual(self.calls, [])
+
+    def test_command_keeps_repeated_arguments_and_converts_run_file(self):
+        folder = self.root / 'runs/previous'
+        folder.mkdir()
+        (folder / 'recommendation.json').write_text('{}')
+        args, _ = self.service.command({
+            'operation': 'generate', 'mode': 'preview',
+            'fields': {
+                'recommendation_run': 'runs/previous/recommendation.json',
+                'requirement': ['保留中文', '--execute'],
+                'targets': ['java.array', 'java.loop'],
+            },
+        }, 'arguments')
+        self.assertEqual(args[args.index('--recommendation-run') + 1], str(folder))
+        self.assertIn('--requirement=保留中文', args)
+        self.assertIn('--requirement=--execute', args)
+        self.assertNotIn('--execute', args)
+        target_index = args.index('--targets')
+        self.assertEqual(args[target_index + 1:target_index + 3], ['java.array', 'java.loop'])
+        self.assertEqual(self.calls, [])
+
+    def test_unknown_job_and_returned_job_cannot_change_queue(self):
+        with self.assertRaises(KeyError):
+            self.service.get_job('missing')
+        job = self.wait(self.service.launch({
+            'operation': 'profile', 'mode': 'preview', 'fields': {},
+        }))
+        job['status'] = 'tampered'
+        self.service.jobs()[0]['status'] = 'tampered'
+        self.assertEqual(self.service.get_job(job['id'])['status'], 'succeeded')
+
     def test_http_host_csrf_and_routes(self):
         server=make_server(self.root,0,self.service)
         thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
